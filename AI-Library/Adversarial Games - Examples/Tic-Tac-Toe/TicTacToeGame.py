@@ -40,21 +40,21 @@ class TicTacToeGame(object):
         initial_state = TicTacToeState()
         initial_node = TicTacToeNode(initial_state)
         problem = TicTacToeProblem()
-        engine = Minimax(problem, 5)
+        engine = Minimax(problem, 6)
         
         current_node = initial_node
  
         while not problem.is_end_node(current_node):
             print("---------------------------------------------------------------")
             print("\nIt's the turn of ", current_node.state.curr_player, "\n")
-            print(current_node.state.board)
+            print(current_node.state)
                                
             engine.perform_search(current_node)           
             current_node = engine.obtained_successor
             print("Obtained value: ", engine.obtained_value, "\n")
 
         print("------------------------ GAME OVER! ------------------------")
-        print(current_node.state.board)
+        print(current_node.state)
         print("Obtained value: ", engine.obtained_value, "\n")
             
         

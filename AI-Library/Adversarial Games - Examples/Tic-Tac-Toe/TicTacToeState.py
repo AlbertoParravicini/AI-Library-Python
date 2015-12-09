@@ -47,3 +47,19 @@ class TicTacToeState(AdversarialGameState):
             self.curr_player = new_player
         except ValueError:
             print("The player isn't valid!")
+
+    def __str__(self):
+        string = ""
+        string += " -------------\n" 
+        for row in range(0,3):
+            string += " |"
+            for col in range(0,3):              
+                if self.board[row][col] == Tokens.circle:
+                    string += " O "
+                elif self.board[row][col] == Tokens.cross:
+                    string += " X "
+                else:
+                    string += "   "
+                string += "|"
+            string += "\n -------------\n" 
+        return string
