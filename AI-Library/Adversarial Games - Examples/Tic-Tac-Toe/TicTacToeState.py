@@ -2,6 +2,7 @@ from AdversarialGameState  import AdversarialGameState
 from enum import Enum
 import numpy as np
 import random as random
+import copy as copy
 
 class Tokens(Enum):
     circle = 0
@@ -16,7 +17,7 @@ class TicTacToeState(AdversarialGameState):
             self.board = np.full((3,3), Tokens.empty, dtype=Tokens)
             self.curr_player = random.choice([Tokens.cross, Tokens.circle])
         else:
-            self.board = parent.board
+            self.board = copy.copy(parent.board)
             self.curr_player = Tokens.cross if parent.curr_player == Tokens.circle else Tokens.circle
 
     def make_move(self, row, col):   

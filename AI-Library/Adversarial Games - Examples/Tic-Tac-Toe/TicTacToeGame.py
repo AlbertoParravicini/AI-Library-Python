@@ -1,4 +1,6 @@
 from TicTacToeState import TicTacToeState
+from TicTacToeNode import TicTacToeNode
+from TicTacToeProblem import TicTacToeProblem
 
 class TicTacToeGame(object):
     """description of class"""
@@ -32,7 +34,8 @@ class TicTacToeGame(object):
         
 
 
-#state = TicTacToeState()
+state = TicTacToeState()
+node = TicTacToeNode(state)
 #state.make_move(0,0)
 #state.make_move(1,1)
 #state.make_move(2,2)
@@ -40,4 +43,8 @@ class TicTacToeGame(object):
 #state.make_move(2,1)
 #state.make_move(1,2)
 #print(state.is_game_over())
-game = TicTacToeGame()
+problem = TicTacToeProblem()
+successors = problem.get_successors(node)
+for succ in successors:
+    print(succ.state.board)
+#game = TicTacToeGame()

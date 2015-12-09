@@ -12,8 +12,6 @@ class AdversarialProblem(metaclass=ABCMeta):
     """
 
     def __init__(self):
-        self.initial_node = None
-        # Remove these
         self.max_value = None
         self.min_value = None
 

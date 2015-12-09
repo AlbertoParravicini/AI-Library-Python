@@ -14,18 +14,17 @@ class AdversarialNode(metaclass=ABCMeta):
         self.parent_node = parent_node
         self.rule_applied = rule_applied
 
-
-    @abstractmethod
+   
     def set_state(self, state):
-        return
+        self.state = state
 
-    @abstractmethod
+  
     def set_parent(self, parent):
-        return
+        self.set_parent = parent
 
-    @abstractmethod
+
     def set_rule_applied(self, rule_applied):
-        return
+        self.rule_applied = set_rule_applied
 
     @abstractmethod
     def is_max(self):
