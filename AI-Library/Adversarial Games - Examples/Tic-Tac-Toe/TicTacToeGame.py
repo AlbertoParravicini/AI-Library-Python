@@ -1,11 +1,16 @@
 from TicTacToeState import TicTacToeState
 from TicTacToeNode import TicTacToeNode
 from TicTacToeProblem import TicTacToeProblem
+from Minimax import Minimax
 
 class TicTacToeGame(object):
     """description of class"""
 
     def __init__(self):
+        return
+            
+        
+    def human_vs_human(self):
         self.state = TicTacToeState()
         
         while True:
@@ -30,21 +35,33 @@ class TicTacToeGame(object):
             else:
                 print("GAME OVER!")
                 break
+        
+    def ai_vs_ai(self):
+        initial_state = TicTacToeState()
+        initial_node = TicTacToeNode(initial_state)
+        problem = TicTacToeProblem()
+        engine = Minimax(problem, 5)
+        
+        current_node = initial_node
+ 
+        while not problem.is_end_node(current_node):
+            print("---------------------------------------------------------------")
+            print("\nIt's the turn of ", current_node.state.curr_player, "\n")
+            print(current_node.state.board)
+                               
+            engine.perform_search(current_node)           
+            current_node = engine.obtained_successor
+            print("Obtained value: ", engine.obtained_value, "\n")
+
+        print("------------------------ GAME OVER! ------------------------")
+        print(current_node.state.board)
+        print("Obtained value: ", engine.obtained_value, "\n")
             
         
+            
 
 
-state = TicTacToeState()
-node = TicTacToeNode(state)
-#state.make_move(0,0)
-#state.make_move(1,1)
-#state.make_move(2,2)
-#state = TicTacToeState(state)
-#state.make_move(2,1)
-#state.make_move(1,2)
-#print(state.is_game_over())
-problem = TicTacToeProblem()
-successors = problem.get_successors(node)
-for succ in successors:
-    print(succ.state.board)
-#game = TicTacToeGame()
+
+
+game = TicTacToeGame()
+game.ai_vs_ai()

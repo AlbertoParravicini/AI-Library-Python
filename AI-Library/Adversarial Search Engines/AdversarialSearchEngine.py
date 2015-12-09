@@ -15,7 +15,7 @@ class AdversarialSearchEngine(metaclass= ABCMeta):
         self.obtained_successor = None
 
     @abstractmethod
-    def perform_search(initial_node):
+    def perform_search(self, initial_node):
         """
         Perform a search from the provided initial state, by using the rules
         expressed in the associated problem;
