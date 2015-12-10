@@ -20,14 +20,12 @@ class TicTacToeState(AdversarialGameState):
             self.board = copy.copy(parent.board)
             self.curr_player = Tokens.cross if parent.curr_player == Tokens.circle else Tokens.circle
 
-    def make_move(self, row, col):   
-        try:    
-            if row not in range(0,3) or col not in range(0,3) or self.board[row, col] != Tokens.empty:
-                raise ValueError
-            else:
-                self.board[row, col] = self.curr_player
-        except ValueError:
-            print("The cell isn't valid!")
+    def make_move(self, row, col):          
+        if row not in range(0,3) or col not in range(0,3) or self.board[row, col] != Tokens.empty:
+            raise ValueError
+        else:
+            self.board[row, col] = self.curr_player
+       
 
     def is_game_over(self):          
         return self.has_player_won(Tokens.cross) or self.has_player_won(Tokens.circle) or (Tokens.empty not in self.board.reshape(-1))
