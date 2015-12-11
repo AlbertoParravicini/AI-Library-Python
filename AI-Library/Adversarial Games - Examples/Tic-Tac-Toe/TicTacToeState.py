@@ -31,11 +31,25 @@ class TicTacToeState(AdversarialGameState):
         return self.has_player_won(Tokens.cross) or self.has_player_won(Tokens.circle) or (Tokens.empty not in self.board.reshape(-1))
 
     def has_player_won(self, player_token):
+        # A fast but not particularly pretty approach:
+        sum_diag_1 = 0
+        sum_diag_2 = 0
         for curr_index in range(0,3):
-            if (self.board[curr_index, :] == player_token).sum() == 3 or (self.board[:, curr_index] == player_token).sum() == 3:
+            sum_row = 0
+            sum_col = 0
+            for sec_index in range(0,3):
+                if self.board[curr_index, sec_index] == player_token:
+                    sum_row += 1
+                if self.board[sec_index, curr_index] == player_token:
+                    sum_col += 1
+            if sum_row == 3 or sum_col == 3:
                 return True
-        if (np.diag(self.board) == player_token).sum() == 3 or (np.diag(np.fliplr(self.board)) == player_token).sum() == 3:
-            return True  
+            if self.board[curr_index, curr_index] == player_token:
+                sum_diag_1 += 1
+            if self.board[2 -curr_index, curr_index] == player_token:
+                sum_diag_2 += 1
+        if sum_diag_1 == 3 or sum_diag_2 == 3:
+            return True   
         return False
            
     def set_curr_player(self, new_player):
