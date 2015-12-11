@@ -10,20 +10,52 @@ class AdversarialNode(metaclass=ABCMeta):
     """
     
     def __init__(self, state = None, parent_node = None, rule_applied = None):
+        """
+        Initializes the node with the provided values;
+        Each node excepth the first one should have a parent node and a rule, 
+        as it should be possible to trace back the sequence of moves that lead to the node;
+
+        Parameters:
+        -------------
+        state: the state contained in the node;
+        parent_node: the node from which this node was generated;
+        rule_applied: a representation of the move that lead to this node;
+        """
         self.state = state
         self.parent_node = parent_node
         self.rule_applied = rule_applied
 
    
     def set_state(self, state):
+        """
+        Set the state associated to this node;
+        
+        Parameters:
+        -------------
+        state: the state contained in the node;
+        """
         self.state = state
 
   
-    def set_parent(self, parent):
-        self.set_parent = parent
+    def set_parent(self, parent_node):
+        """
+        Set the parent node associated to this node;
+        
+        Parameters:
+        -------------
+        parent_node: the node from which this node was generated;
+        """
+        self.set_parent = parent_node
 
 
     def set_rule_applied(self, rule_applied):
+        """
+        Set the rule associated to this node;
+        
+        Parameters:
+        -------------
+        rule_applied: a representation of the move that lead to this node;
+        """
         self.rule_applied = set_rule_applied
 
     @abstractmethod
