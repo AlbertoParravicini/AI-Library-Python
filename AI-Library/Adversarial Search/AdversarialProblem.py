@@ -12,8 +12,6 @@ class AdversarialProblem(metaclass=ABCMeta):
     """
 
     def __init__(self):
-        self.initial_node = None
-        # Remove these
         self.max_value = None
         self.min_value = None
 
@@ -21,11 +19,13 @@ class AdversarialProblem(metaclass=ABCMeta):
     def get_successors(self, node):
         """
         Parameters: 
-            state: the node of which we want to obtain the successors;
+        -------------
+        state: the node of which we want to obtain the successors;
         
         Return: 
-            a list containing the successor of the given node; 
-            this list can be empty if no successors exist;
+        -------------
+        a list containing the successor of the given node; 
+        this list can be empty if no successors exist;
         """
         return
 
@@ -33,10 +33,12 @@ class AdversarialProblem(metaclass=ABCMeta):
     def is_end_node(self, node):
         """
         Parameters: 
-            node: the node of which one wants to test whether it is a final node or not;
+        -------------
+        node: the node of which one wants to test whether it is a final node or not;
         
         Returns:
-            a boolean value representing whether tyhe given node is final or not;
+        -------------
+        a boolean value representing whether tyhe given node is final or not;
         """
         return
 
@@ -44,10 +46,13 @@ class AdversarialProblem(metaclass=ABCMeta):
     def value (self, node):
         """
         Parameters:
-            node: a node of which one wants to know an estimated value, 
+        -------------
+        node: a node of which one wants to know an estimated value, 
             i.e. how good the state contained in it is; 
 
-        Returns: an integer value representing how good the node is;
+        Returns:
+        -------------
+        an integer value representing how good the node is;
         """
         return
 
