@@ -26,53 +26,37 @@ class TicTacToeProblem(AdversarialProblem):
         return node.state.is_game_over()
 
     def value(self, node):
-        return self.h2(node)        
+        return self.h1(node)        
 
     def h1(self, node):
         heuristic_matrix = [[0,  -10, -100, -1000],
-                            [10,   0,    0,     0],
-                            [100,  0,    0,     0],
-                            [1000, 0,    0,     0]]  
+                            [10,   0,    0],
+                            [100,  0],
+                            [1000]] 
         board = node.state.board  
        
         value = 0
-        for curr_row in range(0,3):
-            i = 0
-            j = 0
-            for curr_col in range(0,3):
-                if board[curr_row][curr_col] == Tokens.cross:
-                    i += 1
-                elif board[curr_row][curr_col] == Tokens.circle:
-                    j += 1
-            value += heuristic_matrix[i][j]
-        
-       
-        for curr_col in range(0,3):
-            i = 0
-            j = 0
-            for curr_row in range(0,3):
-                if board[curr_row][curr_col] == Tokens.cross:
-                    i += 1
-                elif board[curr_row][curr_col] == Tokens.circle:
-                    j += 1
-            value += heuristic_matrix[i][j]
-        
-        i = 0
-        j = 0
-        for curr_ind in range(0,3):    
-            if board[curr_ind][curr_ind] == Tokens.cross:
-                i += 1
-            elif board[curr_ind][curr_ind] == Tokens.circle:
-                j += 1
-        value += heuristic_matrix[i][j]
-        i = 0
-        j = 0
-        for curr_ind in range(0,3):    
-            if board[2 - curr_ind][curr_ind] == Tokens.cross:
-                i += 1
-            elif board[2 - curr_ind][curr_ind] == Tokens.circle:
-                j += 1
-        value += heuristic_matrix[i][j]
+        i3 = j3 = i4 = j4 = 0
+        for curr_index in range(0,3):
+            i1 = j1 = i2 = j2 = 0
+         
+            i1 = (board[curr_index, :] == Tokens.cross).sum()
+            j1 = (board[curr_index, :] == Tokens.circle).sum()
+            i2 = (board[:, curr_index] == Tokens.cross).sum()
+            j2 = (board[:, curr_index] == Tokens.circle).sum()
+            value += heuristic_matrix[i1][j1]
+            value += heuristic_matrix[i2][j2]
+
+            if board[curr_index][curr_index] == Tokens.cross:
+                i3 += 1
+            elif board[curr_index][curr_index] == Tokens.circle:
+                j3 += 1 
+            if board[2 - curr_index][curr_index] == Tokens.cross:
+                i4 += 1
+            elif board[2 - curr_index][curr_index] == Tokens.circle:
+                j4 += 1 
+        value += heuristic_matrix[i3][j3]
+        value += heuristic_matrix[i4][j4]    
              
         return value
 
