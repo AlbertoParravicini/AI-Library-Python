@@ -12,3 +12,4 @@ class AdversarialGameState(metaclass=ABCMeta):
    
     def __init__(self):
         return
+

@@ -6,11 +6,12 @@
     <ProjectGuid>d78ecbda-4917-45cf-98b6-61d0551a8f41</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>Adversarial Games - Examples\Tic-Tac-Toe\TicTacToeGame.py</StartupFile>
-    <SearchPath>Adversarial Search Engines\;Adversarial Search\</SearchPath>
+    <SearchPath>Adversarial Search Engines\;Adversarial Search\;Adversarial Games - Examples\;Adversarial Games - Examples\Tic-Tac-Toe\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>AI-Library</Name>
     <RootNamespace>AI-Library</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

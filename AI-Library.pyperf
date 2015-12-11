@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ProfilingTarget xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectTarget>
+    <TargetProject>d78ecbda-4917-45cf-98b6-61d0551a8f41</TargetProject>
+    <FriendlyName>AI-Library</FriendlyName>
+  </ProjectTarget>
+  <Reports>
+    <Report>
+      <Filename>C:\Users\Alberto Parravicini\AppData\Local\Temp\AI-Library_20151211(4).vsp</Filename>
+    </Report>
+  </Reports>
+</ProfilingTarget>

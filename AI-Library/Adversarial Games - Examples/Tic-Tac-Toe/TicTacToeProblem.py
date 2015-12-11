@@ -49,11 +49,17 @@ class TicTacToeProblem(AdversarialProblem):
         i3 = j3 = i4 = j4 = 0
         for curr_index in range(0,3):
             i1 = j1 = i2 = j2 = 0
-         
-            i1 = (board[curr_index, :] == Tokens.cross).sum()
-            j1 = (board[curr_index, :] == Tokens.circle).sum()
-            i2 = (board[:, curr_index] == Tokens.cross).sum()
-            j2 = (board[:, curr_index] == Tokens.circle).sum()
+            
+            # Longer than other approaches but much faster to execute;
+            for second_index in range(0,3):
+                if board[curr_index, second_index] == Tokens.cross: 
+                    i1 += 1
+                elif board[curr_index, second_index] == Tokens.circle: 
+                    j1 += 1
+                if board[second_index, curr_index] == Tokens.cross: 
+                    i2 += 1
+                elif board[second_index, curr_index] == Tokens.circle: 
+                    j2 += 1 
             value += heuristic_matrix[i1][j1]
             value += heuristic_matrix[i2][j2]
 
