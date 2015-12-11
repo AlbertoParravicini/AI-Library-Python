@@ -29,6 +29,16 @@ class TicTacToeProblem(AdversarialProblem):
         return self.h1(node)        
 
     def h1(self, node):
+        """
+        Heuristic N.1 uses a matrix to evaluate, for each line of size 3 on the board,
+        the numbers of consecutive tokens of the same type:  
+        the number of consecutive tokens of one type, compared to the consecutive tokens of the other type,
+        is used to extract a value from the heuristic_matrix, 
+        which shows how "good" that line of size 3 is for the maximizing player;
+        
+        Heuristic inspired by:
+        https://kartikkukreja.wordpress.com/2013/03/30/heuristic-function-for-tic-tac-toe/
+        """
         heuristic_matrix = [[0,  -10, -100, -1000],
                             [10,   0,    0],
                             [100,  0],
@@ -61,6 +71,26 @@ class TicTacToeProblem(AdversarialProblem):
         return value
 
     def h2(self, node):
+        """ 
+        Heuristic N.2 evaluates the number of degrees of freedom that each player has, 
+        i.e. the number of rows/columns/diagonals which contains only a token of one type,
+        and thus aren't considered "blocked" by the opponent;
+        The value is always computed considering X as the maximizing player, 
+        and it is equal to: value = (P1 degrees of freedom - P2 degrees of freedom)
+        
+        Example: 
+        Current player: O
+        
+        OX -
+        - X -
+        - - -
+            
+        In the given board, O has only one degree of freedom, 
+        as only column 0 has a token O and it is not blocked;
+        on the other hand, player X has 3 degrees of freedom,
+        as column 1, row 1, and the right-left diagonal contain X tokens and are unblocked:
+        thus, the overall value of the state is 3 - 1 = 2
+        """
         board = node.state.board  
         result = 0
        
