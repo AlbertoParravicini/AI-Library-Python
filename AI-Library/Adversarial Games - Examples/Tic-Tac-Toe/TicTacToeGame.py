@@ -2,6 +2,10 @@ from TicTacToeState import TicTacToeState, Tokens
 from TicTacToeNode import TicTacToeNode
 from TicTacToeProblem import TicTacToeProblem
 from Minimax import Minimax
+import os
+import time
+
+
 
 class TicTacToeGame(object):
     """description of class"""
@@ -40,22 +44,28 @@ class TicTacToeGame(object):
         initial_state = TicTacToeState()
         initial_node = TicTacToeNode(initial_state)
         problem = TicTacToeProblem()
-        engine = Minimax(problem, 6)
+        engine = Minimax(problem, 3)
         
         current_node = initial_node
  
         while not problem.is_end_node(current_node):
             engine.reset_engine()
-            print("---------------------------------------------------------------")
+            print("\n---------------------------------------------------------------")
             print("\nIt's the turn of ", current_node.state.curr_player, "\n")
             print(current_node.state)
                                
             engine.perform_search(current_node)           
             current_node = engine.obtained_successor
             print("Obtained value: ", engine.obtained_value, "\n")
+            time.sleep(0)
+            clear = lambda: os.system('cls')
+            clear()
+ 
             
 
+        print("\n------------------------------------------------------------")
         print("------------------------ GAME OVER! ------------------------")
+        print("------------------------------------------------------------\n")
         print(current_node.state)
         print("Obtained value: ", engine.obtained_value, "\n")
             
