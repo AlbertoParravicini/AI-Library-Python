@@ -53,7 +53,7 @@ class Minimax(AdversarialSearchEngine):
         self.search_performed = True
 
     def __max(self, node, depth):
-        if self.problem.is_end_node(node) or depth == self.search_depth:
+        if self.problem.is_end_node(node) or depth >= self.search_depth:
             return self.problem.value(node)
         
         result = self.problem.min_value
@@ -66,7 +66,7 @@ class Minimax(AdversarialSearchEngine):
 
 
     def __min(self, node, depth):
-        if self.problem.is_end_node(node) or depth == self.search_depth:
+        if self.problem.is_end_node(node) or depth >= self.search_depth:
             return self.problem.value(node)
         
         result = self.problem.max_value

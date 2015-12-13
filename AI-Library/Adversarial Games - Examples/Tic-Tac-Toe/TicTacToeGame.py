@@ -45,7 +45,7 @@ class TicTacToeGame(object):
         initial_state = TicTacToeState()
         initial_node = TicTacToeNode(initial_state)
         problem = TicTacToeProblem()
-        engine = MinimaxAlphaBeta(problem, 1)
+        engine = MinimaxAlphaBeta(problem, 4)
         
         current_node = initial_node
  

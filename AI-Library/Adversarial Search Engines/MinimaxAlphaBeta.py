@@ -58,13 +58,14 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             elif result == self.obtained_value:
                 # If two actions yield the same result, pick a random one; 
                 self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
+                continue
         self.search_performed = True
 
     def __max(self, node, depth, alpha, beta):
         """
         Max will examine the successors of the current node and keep the one with highest value;
         """
-        if self.problem.is_end_node(node) or depth == self.search_depth:
+        if self.problem.is_end_node(node) or depth >= self.search_depth:
             return self.problem.value(node)
         
         value = alpha
@@ -72,9 +73,9 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # Update the current value of the node; Max will always take the node with highest value;
             # beta remains fixed, as it is impossible to get a value higher than it;
             if curr_succ.is_max():
-                value = max(value, self.__max(curr_succ, depth + 1, value, beta))
+                value = max(value, self.__max(curr_succ, depth + 1, alpha, beta))
             else:
-                value = max(value, self.__min(curr_succ, depth + 1, value, beta))
+                value = max(value, self.__min(curr_succ, depth + 1, alpha, beta))
             # If a new higher lowest bound has been found, update alpha; 
             # the window is restricted from left to right;
             alpha = max(alpha, value)
@@ -91,7 +92,7 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         """
         Min will examine the successors of the current node and keep the one with lowest value;
         """
-        if self.problem.is_end_node(node) or depth == self.search_depth:
+        if self.problem.is_end_node(node) or depth >= self.search_depth:
             return self.problem.value(node)
         
         value = beta
@@ -99,9 +100,9 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # Update the current value of the node; Min will always take the node with lowest value;
             # alpha remains fixed, as it is impossible to get a value lower than it; 
             if curr_succ.is_max():
-                value = min(value, self.__max(curr_succ, depth + 1, alpha, value))
+                value = min(value, self.__max(curr_succ, depth + 1, alpha, beta))
             else:
-                value = min(value, self.__min(curr_succ, depth + 1, alpha, value))
+                value = min(value, self.__min(curr_succ, depth + 1, alpha, beta))
             # If a new lower highest bound has been found, update beta;
             # the window is restricted from right to left;
             beta = min(beta, value)
