@@ -47,6 +47,9 @@ class Minimax(AdversarialSearchEngine):
             if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
                 self.obtained_value = result
                 self.obtained_successor = curr_succ
+            elif result == self.obtained_value:
+                # If two actions yield the same result, pick a random one; 
+                self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
         self.search_performed = True
 
     def __max(self, node, depth):

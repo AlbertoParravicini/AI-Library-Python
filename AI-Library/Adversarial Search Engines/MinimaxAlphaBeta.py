@@ -55,6 +55,9 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
                 self.obtained_value = result
                 self.obtained_successor = curr_succ
+            elif result == self.obtained_value:
+                # If two actions yield the same result, pick a random one; 
+                self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
         self.search_performed = True
 
     def __max(self, node, depth, alpha, beta):
@@ -66,15 +69,21 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         
         value = alpha
         for curr_succ in self.problem.get_successors(node):
-            if curr_succ.is_max():
-                result = self.__max(curr_succ, depth + 1, value, beta)
-            else:
-                result = self.__min(curr_succ, depth + 1, value, beta)
-            # If the result is out of bounds, the branch is abandoned; the value of the node is returned anyway;
-            if result >= beta:
-                return result
             # Update the current value of the node; Max will always take the node with highest value;
-            value = max(result, value) 
+            # beta remains fixed, as it is impossible to get a value higher than it;
+            if curr_succ.is_max():
+                value = max(value, self.__max(curr_succ, depth + 1, value, beta))
+            else:
+                value = max(value, self.__min(curr_succ, depth + 1, value, beta))
+            # If a new higher lowest bound has been found, update alpha; 
+            # the window is restricted from left to right;
+            alpha = max(alpha, value)
+
+            # If alpha is greater than beta the search window has a negative depth, 
+            # so it is pointless to keep exploring this branch: 
+            # the current branch is cut, and the value of the node returned;
+            if alpha >= beta:
+                break
         return value
 
 
@@ -87,15 +96,21 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         
         value = beta
         for curr_succ in self.problem.get_successors(node):
-            if curr_succ.is_max():
-                result = self.__max(curr_succ, depth + 1, alpha, value)
-            else:
-                result = self.__min(curr_succ, depth + 1, alpha, value)
-            # If the result is out of bounds, the branch is abandoned; the value of the node is returned anyway;
-            if result <= alpha:
-                return result   
             # Update the current value of the node; Min will always take the node with lowest value;
-            value = min(result, value)     
+            # alpha remains fixed, as it is impossible to get a value lower than it; 
+            if curr_succ.is_max():
+                value = min(value, self.__max(curr_succ, depth + 1, alpha, value))
+            else:
+                value = min(value, self.__min(curr_succ, depth + 1, alpha, value))
+            # If a new lower highest bound has been found, update beta;
+            # the window is restricted from right to left;
+            beta = min(beta, value)
+
+            # If beta is lower than alpha the search window has a negative depth, 
+            # so it is pointless to keep exploring this branch: 
+            # the current branch is cut, and the value of the node returned;
+            if alpha >= beta:
+                break  
         return value
 
     
