@@ -58,6 +58,9 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         self.search_performed = True
 
     def __max(self, node, depth, alpha, beta):
+        """
+        Max will examine the successors of the current node and keep the one with highest value;
+        """
         if self.problem.is_end_node(node) or depth == self.search_depth:
             return self.problem.value(node)
         
@@ -67,14 +70,18 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
                 result = self.__max(curr_succ, depth + 1, value, beta)
             else:
                 result = self.__min(curr_succ, depth + 1, value, beta)
+            # If the result is out of bounds, the branch is abandoned; the value of the node is returned anyway;
             if result >= beta:
-                return result   
-            if result > value:
-                value = result     
+                return result
+            # Update the current value of the node; Max will always take the node with highest value;
+            value = max(result, value) 
         return value
 
 
     def __min(self, node, depth, alpha, beta):
+        """
+        Min will examine the successors of the current node and keep the one with lowest value;
+        """
         if self.problem.is_end_node(node) or depth == self.search_depth:
             return self.problem.value(node)
         
@@ -84,10 +91,11 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
                 result = self.__max(curr_succ, depth + 1, alpha, value)
             else:
                 result = self.__min(curr_succ, depth + 1, alpha, value)
+            # If the result is out of bounds, the branch is abandoned; the value of the node is returned anyway;
             if result <= alpha:
                 return result   
-            if result < value:
-                value = result      
+            # Update the current value of the node; Min will always take the node with lowest value;
+            value = min(result, value)     
         return value
 
     
