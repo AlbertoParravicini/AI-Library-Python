@@ -37,28 +37,28 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         alpha = self.problem.min_value
         beta = self.problem.max_value
 
-        for curr_succ in self.problem.get_successors(initial_node):
-            # If the maximum depth is set to 0, return a random successor node;
-            if self.search_depth == 0:
-                self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
-                self.obtained_value = self.problem.value(self.obtained_successor)
-                break
-            
-            # A certain player might play more than one turn in a row, 
-            # so no assumptions are made with respect to the turn alternation;
-            if curr_succ.is_max():
-                result = self.__max(curr_succ, curr_depth + 1, alpha, self.obtained_value)
-            else:
-                result = self.__min(curr_succ, curr_depth + 1, self.obtained_value, beta)
+        # If the maximum depth is set to 0, return a random successor node;
+        if self.search_depth == 0:
+            self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
+            self.obtained_value = self.problem.value(self.obtained_successor)
+        else:
+            for curr_succ in self.problem.get_successors(initial_node):
+                       
+                # A certain player might play more than one turn in a row, 
+                # so no assumptions are made with respect to the turn alternation;
+                if curr_succ.is_max():
+                    result = self.__max(curr_succ, curr_depth + 1, alpha, self.obtained_value)
+                else:
+                    result = self.__min(curr_succ, curr_depth + 1, self.obtained_value, beta)
 
-            # If a new best move was found, save it along with the value provided by the search;
-            if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
-                self.obtained_value = result
-                self.obtained_successor = curr_succ
-            elif result == self.obtained_value:
-                # If two actions yield the same result, pick a random one; 
-                self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
-                continue
+                # If a new best move was found, save it along with the value provided by the search;
+                if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
+                    self.obtained_value = result
+                    self.obtained_successor = curr_succ
+                elif result == self.obtained_value:
+                    # If two actions yield the same result, pick a random one; 
+                    self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
+                    continue
         self.search_performed = True
 
     def __max(self, node, depth, alpha, beta):
@@ -76,6 +76,11 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
                 value = max(value, self.__max(curr_succ, depth + 1, alpha, beta))
             else:
                 value = max(value, self.__min(curr_succ, depth + 1, alpha, beta))
+
+            if value >= beta:
+                return value
+
+
             # If a new higher lowest bound has been found, update alpha; 
             # the window is restricted from left to right;
             alpha = max(alpha, value)
@@ -83,8 +88,7 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # If alpha is greater than beta the search window has a negative depth, 
             # so it is pointless to keep exploring this branch: 
             # the current branch is cut, and the value of the node returned;
-            if alpha >= beta:
-                break
+            
         return value
 
 
@@ -103,6 +107,10 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
                 value = min(value, self.__max(curr_succ, depth + 1, alpha, beta))
             else:
                 value = min(value, self.__min(curr_succ, depth + 1, alpha, beta))
+
+            if value <= alpha:
+                return value
+
             # If a new lower highest bound has been found, update beta;
             # the window is restricted from right to left;
             beta = min(beta, value)
@@ -110,8 +118,7 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # If beta is lower than alpha the search window has a negative depth, 
             # so it is pointless to keep exploring this branch: 
             # the current branch is cut, and the value of the node returned;
-            if alpha >= beta:
-                break  
+            
         return value
 
     

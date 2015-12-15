@@ -28,28 +28,27 @@ class Minimax(AdversarialSearchEngine):
         self.obtained_successor = None
         self.obtained_value = self.problem.min_value if initial_node.is_max() else self.problem.max_value
         curr_depth = 0
+        
+         # If the maximum depth is set to 0, return a random successor node;
+        if self.search_depth == 0:
+            self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
+            self.obtained_value = self.problem.value(self.obtained_successor)
+        else:
+            for curr_succ in self.problem.get_successors(initial_node):           
+                # A certain player might play more than one turn in a row, 
+                # so no assumptions are made with respect to the turn alternation;
+                if curr_succ.is_max():
+                    result = self.__max(curr_succ, curr_depth + 1)
+                else:
+                    result = self.__min(curr_succ, curr_depth + 1)
 
-        for curr_succ in self.problem.get_successors(initial_node):
-            # If the maximum depth is set to 0, return a random successor node;
-            if self.search_depth == 0:
-                self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
-                self.obtained_value = self.problem.value(self.obtained_successor)
-                break
-            
-            # A certain player might play more than one turn in a row, 
-            # so no assumptions are made with respect to the turn alternation;
-            if curr_succ.is_max():
-                result = self.__max(curr_succ, curr_depth + 1)
-            else:
-                result = self.__min(curr_succ, curr_depth + 1)
-
-            # If a new best move was found, save it along with the value provided by the search;
-            if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
-                self.obtained_value = result
-                self.obtained_successor = curr_succ
-            elif result == self.obtained_value:
-                # If two actions yield the same result, pick a random one; 
-                self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
+                # If a new best move was found, save it along with the value provided by the search;
+                if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
+                    self.obtained_value = result
+                    self.obtained_successor = curr_succ
+                elif result == self.obtained_value:
+                    # If two actions yield the same result, pick a random one; 
+                    self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
         self.search_performed = True
 
     def __max(self, node, depth):
