@@ -58,6 +58,9 @@ class AdversarialNode(metaclass=ABCMeta):
         """
         self.rule_applied = set_rule_applied
 
+    def __eq__(self, another_node):
+        return self.state == another_node.state
+
     @abstractmethod
     def is_max(self):
         """

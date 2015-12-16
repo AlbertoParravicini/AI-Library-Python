@@ -1,5 +1,6 @@
 from AdversarialSearchEngine import AdversarialSearchEngine
 import random as random
+import numpy
 
 class MinimaxAlphaBeta(AdversarialSearchEngine):
     """
@@ -33,7 +34,6 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         
         self.obtained_successor = None
         self.obtained_value = self.problem.min_value if initial_node.is_max() else self.problem.max_value
-        curr_depth = 0
         alpha = self.problem.min_value
         beta = self.problem.max_value
 
@@ -42,88 +42,47 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
             self.obtained_value = self.problem.value(self.obtained_successor)
         else:
-            for curr_succ in self.problem.get_successors(initial_node):
-                       
-                # A certain player might play more than one turn in a row, 
-                # so no assumptions are made with respect to the turn alternation;
-                if curr_succ.is_max():
-                    result = self.__max(curr_succ, curr_depth + 1, alpha, self.obtained_value)
-                else:
-                    result = self.__min(curr_succ, curr_depth + 1, self.obtained_value, beta)
-
-                # If a new best move was found, save it along with the value provided by the search;
-                if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
-                    self.obtained_value = result
-                    self.obtained_successor = curr_succ
-                elif result == self.obtained_value:
-                    # If two actions yield the same result, pick a random one; 
-                    self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
-                    continue
+            self.initial_node = initial_node
+            self.obtained_value = self.minimax_ab(initial_node, alpha, beta, 0)
+            while (self.obtained_successor.parent_node != initial_node):
+                self.obtained_successor = self.obtained_successor.parent_node
         self.search_performed = True
 
-    def __max(self, node, depth, alpha, beta):
-        """
-        Max will examine the successors of the current node and keep the one with highest value;
-        """
-        if self.problem.is_end_node(node) or depth >= self.search_depth:
+
+    def minimax_ab(self, node, alpha, beta, depth):
+        if depth >= self.search_depth or self.problem.is_end_node(node):
+            #print("VALUE: ", self.problem.value(node), "depth: ", depth)
             return self.problem.value(node)
-        
-        value = alpha
-        for curr_succ in self.problem.get_successors(node):
-            # Update the current value of the node; Max will always take the node with highest value;
-            # beta remains fixed, as it is impossible to get a value higher than it;
-            if curr_succ.is_max():
-                value = max(value, self.__max(curr_succ, depth + 1, alpha, beta))
-            else:
-                value = max(value, self.__min(curr_succ, depth + 1, alpha, beta))
-
-            if value >= beta:
-                return value
 
 
-            # If a new higher lowest bound has been found, update alpha; 
-            # the window is restricted from left to right;
-            alpha = max(alpha, value)
+        if node.is_max():
+            for curr_succ in self.problem.get_successors(node):  
+                #self.log(curr_succ, alpha, beta, depth)         
+                value = self.minimax_ab(curr_succ, alpha, beta, depth + 1)
+                
+                if value > alpha:
+                    if self.initial_node.is_max() and value <= beta:
+                        self.obtained_successor = curr_succ
+                    alpha = value
 
-            # If alpha is greater than beta the search window has a negative depth, 
-            # so it is pointless to keep exploring this branch: 
-            # the current branch is cut, and the value of the node returned;
-            
-        return value
-
-
-    def __min(self, node, depth, alpha, beta):
-        """
-        Min will examine the successors of the current node and keep the one with lowest value;
-        """
-        if self.problem.is_end_node(node) or depth >= self.search_depth:
-            return self.problem.value(node)
-        
-        value = beta
-        for curr_succ in self.problem.get_successors(node):
-            # Update the current value of the node; Min will always take the node with lowest value;
-            # alpha remains fixed, as it is impossible to get a value lower than it; 
-            if curr_succ.is_max():
-                value = min(value, self.__max(curr_succ, depth + 1, alpha, beta))
-            else:
-                value = min(value, self.__min(curr_succ, depth + 1, alpha, beta))
-
-            if value <= alpha:
-                return value
-
-            # If a new lower highest bound has been found, update beta;
-            # the window is restricted from right to left;
-            beta = min(beta, value)
-
-            # If beta is lower than alpha the search window has a negative depth, 
-            # so it is pointless to keep exploring this branch: 
-            # the current branch is cut, and the value of the node returned;
-            
-        return value
-
-    
+                if beta <= alpha:
+                    return alpha
+            return value
 
 
+        else:
+            for curr_succ in self.problem.get_successors(node):
+                #self.log(curr_succ, alpha, beta, depth)
+                value = self.minimax_ab(curr_succ, alpha, beta, depth + 1)
+                if value < beta:
+                    if self.initial_node.is_min() and alpha <= value:
+                        self.obtained_successor = curr_succ
+                    beta = value
 
+                if beta <= alpha:
+                    return beta
+            return value
 
-
+    def log(self, node, alpha, beta, depth):
+        print(node.rule_applied, node.state, "alpha: ", alpha, ", beta: ", beta, " depth: ", depth, "\n-----------------\n")
+       

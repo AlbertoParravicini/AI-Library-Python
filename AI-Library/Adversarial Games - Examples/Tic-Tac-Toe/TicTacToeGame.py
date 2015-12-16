@@ -73,30 +73,31 @@ class TicTacToeGame(object):
         
             
 
-#state = TicTacToeState()
-#node = TicTacToeNode(state, None, None)
-#problem = TicTacToeProblem()
-#state.set_curr_player(Tokens.cross)
-#state.make_move(0,0)
-#state.make_move(1,1)
-#state.set_curr_player(Tokens.circle)
-#state.make_move(0,1)
-#state.make_move(2,1)
+state = TicTacToeState()
+node = TicTacToeNode(state, None, None)
+problem = TicTacToeProblem()
+state.set_curr_player(Tokens.cross)
+state.make_move(1,1)
+state.make_move(2,1)
+state.set_curr_player(Tokens.circle)
+state.make_move(2,2)
 
-#engine = Minimax(problem, 1)
-#engine.perform_search(node)
+
+engine = MinimaxAlphaBeta(problem, 4)
+engine.perform_search(node)
 #succ_list = problem.get_successors(node)
 #succ_list = problem.get_successors(succ_list[0])
 #succ_list = problem.get_successors(succ_list[0])
 #succ_list = problem.get_successors(succ_list[0])
 
-#print(engine.obtained_successor.state)
-#print(engine.obtained_value)
+print(state)
+print(engine.obtained_successor.state)
+print(engine.obtained_value)
 
 #for succ in succ_list:
 #   print(succ.state, "Value: ", problem.value(succ))
 
-game = TicTacToeGame()
-game.ai_vs_ai()
+#game = TicTacToeGame()
+#game.ai_vs_ai()
 
 

@@ -12,4 +12,8 @@ class AdversarialGameState(metaclass=ABCMeta):
    
     def __init__(self):
         return
+    
+    @abstractmethod
+    def __eq__(self, another_state):
+        return 
 
