@@ -57,7 +57,8 @@ class TicTacToeGame(object):
                                
             engine.perform_search(current_node)           
             current_node = engine.obtained_successor
-            print("Obtained value: ", engine.obtained_value, "\n")
+            print("Obtained value: ", engine.obtained_value)
+            print("Visited states; ", engine.num_of_visited_states, "\n")
             time.sleep(0)
             clear = lambda: os.system('cls')
             #clear()

@@ -30,6 +30,7 @@ class Minimax(AdversarialSearchEngine):
         curr_depth = 0
 
         for curr_succ in self.problem.get_successors(initial_node):
+            self.num_of_visited_states += 1
             # If the maximum depth is set to 0, return a random successor node;
             if self.search_depth == 0:
                 self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
@@ -58,6 +59,7 @@ class Minimax(AdversarialSearchEngine):
         
         result = self.problem.min_value
         for curr_succ in self.problem.get_successors(node):
+            self.num_of_visited_states += 1
             if curr_succ.is_max():
                 result = max(result, self.__max(curr_succ, depth + 1))
             else:
@@ -71,6 +73,7 @@ class Minimax(AdversarialSearchEngine):
         
         result = self.problem.max_value
         for curr_succ in self.problem.get_successors(node):
+            self.num_of_visited_states += 1
             if curr_succ.is_max():
                 result = min(result, self.__max(curr_succ, depth + 1))
             else:
