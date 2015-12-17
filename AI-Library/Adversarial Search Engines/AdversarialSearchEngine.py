@@ -30,6 +30,7 @@ class AdversarialSearchEngine(metaclass= ABCMeta):
         self.search_performed = False
         self.obtained_value = None
         self.obtained_successor = None
+        self.num_of_visited_states = 0
 
     @abstractmethod
     def perform_search(self, initial_node):
@@ -76,5 +77,6 @@ class AdversarialSearchEngine(metaclass= ABCMeta):
         self.search_performed = False
         self.obtained_successor = False
         self.obtained_value = 0
+        self.num_of_visited_states = 0
 
     
