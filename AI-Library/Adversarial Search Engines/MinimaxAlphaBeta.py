@@ -45,9 +45,11 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         # Generates the immediate successors of the initial node,
         # then apply a minimax search to each of them:
         # their values, along with alpha and beta, are passed up to the highest level;
-        # The moves are shuffled so that in case of moves with equal value, a random one is returned;
+        # The moves are ordered based on their immediate value,
+        # which reduces the number of visited states;
         successors = self.problem.get_successors(initial_node)
-        random.shuffle(successors)
+        sorted(successors, key = lambda n: self.problem.value(n))
+       
         for curr_succ in successors:
             
             self.num_of_visited_states += 1
@@ -68,9 +70,9 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
     def __minimax_ab(self, node, depth, alpha, beta):
         if self.problem.is_end_node(node) or depth >= self.search_depth:
             return self.problem.value(node)
-
+        
+        
         if node.is_max():
-              
             value = alpha
             for curr_succ in self.problem.get_successors(node):
                 self.num_of_visited_states += 1
@@ -91,8 +93,8 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # If all the successors have been visited, return the value of the node,    
             # which is guaranteed to be between alpha and beta;      
             return value
-        else:
-       
+
+        else:      
             value = beta
             for curr_succ in self.problem.get_successors(node):
                 self.num_of_visited_states += 1
