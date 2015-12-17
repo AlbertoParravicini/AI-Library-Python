@@ -28,7 +28,10 @@ class Minimax(AdversarialSearchEngine):
         self.obtained_successor = None
         self.obtained_value = self.problem.min_value if initial_node.is_max() else self.problem.max_value
         curr_depth = 0
-
+        
+        # Generates the immediate successors of the initial node,
+        # then apply a minimax search to each of them:
+        # their values are passed up to the highest level;
         for curr_succ in self.problem.get_successors(initial_node):
             self.num_of_visited_states += 1
             # If the maximum depth is set to 0, return a random successor node;
