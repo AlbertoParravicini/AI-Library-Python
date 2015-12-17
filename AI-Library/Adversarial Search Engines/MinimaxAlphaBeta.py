@@ -41,8 +41,11 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             self.obtained_successor = random.choice(self.problem.get_successors(initial_node))
             self.obtained_value = self.problem.value(self.obtained_successor)
             return
-
-        for curr_succ in self.problem.get_successors(initial_node):
+        
+        # The moves are shuffled so that in case of moves with equal value, a random one is returned;
+        successors = self.problem.get_successors(initial_node)
+        random.shuffle(successors)
+        for curr_succ in successors:
             
             self.num_of_visited_states += 1
             self.flag = False
@@ -57,10 +60,6 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
                 self.obtained_value = result
                 self.obtained_successor = curr_succ
-            elif result == self.obtained_value and self.flag == True:
-                # If two actions yield the same result, pick a random one; 
-                #self.obtained_successor = random.choice([self.obtained_successor, curr_succ])
-                continue
         self.search_performed = True
 
     def __max(self, node, depth, alpha, beta):
