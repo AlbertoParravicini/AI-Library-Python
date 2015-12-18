@@ -90,4 +90,23 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
         return best_value
 
 
+    def set_order_moves(self, choice):
+        """
+        Set if the successors of a node should be ordered based on their immediate value;
+    
+        Parameters:
+        -------------
+        choice: boolean variable, it tells if the moves should be ordered or not;
+        """
+        try:
+            if not isinstance(choice, bool):
+                raise TypeError
+            assert not self.search_performed
+            self.order_moves = choice
+        except TypeError:
+                print("ERROR: ", choice, " isn't a boolean variable!")
+        except AssertionError:
+                print("ERROR: serach already performed!")
+
+
    

@@ -23,8 +23,8 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
                  of the search; by default it is set ot False;
     """
     
-    def __init__(self, problem, search_depth = 1):
-        super().__init__(problem, search_depth)
+    def __init__(self, problem, **kwargs):
+        super().__init__(problem, **kwargs)
         self.order_moves = kwargs.get("order_moves", False)
     
     def perform_search(self, initial_node):  
@@ -127,7 +127,24 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # which is guaranteed to be between alpha and beta;   
             return value
 
-
+    def set_order_moves(self, choice):
+        """
+        Set if the successors of a node should be ordered based on their immediate value;
+    
+        Parameters:
+        -------------
+        choice: boolean variable, it tells if the moves should be ordered or not;
+        """
+        try:
+            if not isinstance(choice, bool):
+                raise TypeError
+            assert not self.search_performed
+            self.order_moves = choice
+        except TypeError:
+                print("ERROR: ", choice, " isn't a boolean variable!")
+        except AssertionError:
+                print("ERROR: serach already performed!")
+            
 
 
 
