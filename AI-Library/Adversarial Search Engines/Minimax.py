@@ -9,8 +9,8 @@ class Minimax(AdversarialSearchEngine):
     under the assumption that both players will play rationally (i.e optimally);
     """
     
-    def __init__(self, problem, search_depth = 1):
-        super().__init__(problem, search_depth)
+    def __init__(self, problem, **kwargs):
+        super().__init__(problem, **kwargs)
     
     def perform_search(self, initial_node):  
         """
