@@ -58,7 +58,9 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
             value = -self.__negamax_ab(curr_succ, depth + 1)
             if value > best_value:
                 best_value = value
-                self.obtained_successor = curr_succ
+                
+                if depth == 0:
+                    self.obtained_successor = curr_succ
        
         return best_value
 
