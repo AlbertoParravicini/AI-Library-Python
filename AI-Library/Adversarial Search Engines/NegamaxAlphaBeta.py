@@ -5,8 +5,7 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
     """
     Implementation of the Negamax algorithm with alpha-beta pruning.
     The Negamax works exactly like the standard minimax, it only has fewer lines of code.
-    Negamax requires a strict alternation between Max nodes and Min nodes, to the contrary of the standard Minimax.
-    The algorithm works for zero-sum, two-players, turn-based games, with perfect knowledge and deterministic moves.
+     The algorithm works for zero-sum, two-players, turn-based games, with perfect knowledge and deterministic moves.
     Given an initial node, it will look for the best move that the current player can perform,
     under the assumption that both players will play rationally (i.e optimally).
     Alpha-beta pruning optimizes the search by discarding branches which are guaranteed to return 
@@ -50,7 +49,9 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
 
     def __negamax_ab(self, node, depth):
         if depth >= self.search_depth or self.problem.is_end_node(node):
-            return self.problem.value(node) if node.is_max() else -self.problem.value(node)
+            # Checking the parent instead of the current node allows to have a non-strict Min-Max alternation.
+            # The value is not evaluated globally, but from the point of view of the current player;
+            return self.problem.value(node) if node.parent_node.is_min() else -self.problem.value(node)
         
         best_value = self.problem.min_value
         for curr_succ in self.problem.get_successors(node):
