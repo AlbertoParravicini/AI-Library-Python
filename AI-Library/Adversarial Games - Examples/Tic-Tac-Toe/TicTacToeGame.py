@@ -3,6 +3,7 @@ from TicTacToeNode import TicTacToeNode
 from TicTacToeProblem import TicTacToeProblem
 from Minimax import Minimax
 from MinimaxAlphaBeta import MinimaxAlphaBeta
+from NegamaxAlphaBeta import NegamaxAlphaBeta
 import os
 import time
 
@@ -45,7 +46,9 @@ class TicTacToeGame(object):
         initial_state = TicTacToeState()
         initial_node = TicTacToeNode(initial_state)
         problem = TicTacToeProblem()
-        engine = MinimaxAlphaBeta(problem, 4)
+        engine = MinimaxAlphaBeta(problem, search_depth = 4, order_moves = True)
+       
+
         
         current_node = initial_node
  
@@ -58,7 +61,7 @@ class TicTacToeGame(object):
             engine.perform_search(current_node)           
             current_node = engine.obtained_successor
             print("Obtained value: ", engine.obtained_value)
-            print("Visited states; ", engine.num_of_visited_states, "\n")
+            print("Visited states: ", engine.num_of_visited_states, "\n")
             time.sleep(0)
             clear = lambda: os.system('cls')
             #clear()

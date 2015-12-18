@@ -11,7 +11,8 @@ class AdversarialSearchEngine(metaclass= ABCMeta):
     are stored in the engine and are accessible to the user;
     """
 
-    def __init__(self, problem, search_depth = 1):
+    def __init__(self, problem, **kwargs):
+
         """
         Initialize the engine with the provided parameters:
         note that to perform a search it is necessary to specify a problem 
@@ -23,10 +24,11 @@ class AdversarialSearchEngine(metaclass= ABCMeta):
         -------------
         problem: the problem which will be used by the engine; to perform 
                  a successful search, the problem has to specify all its abstract functions;
-        search_depth: the depth of the engine, i.e. the numbers of plies considered by it;      
+        search_depth: the depth of the engine, i.e. the numbers of plies considered by it;  
+                      if not specified, it is set equal to 1;    
         """
         self.problem = problem
-        self.search_depth = search_depth
+        self.search_depth = kwargs.get("search_depth", 1)
         self.search_performed = False
         self.obtained_value = None
         self.obtained_successor = None
@@ -54,7 +56,7 @@ class AdversarialSearchEngine(metaclass= ABCMeta):
         
         Parameters:
         -------------
-        search_depth: the new maximum depth of the search tree
+        search_depth: the new maximum depth of the search tree;
         """
         self.search_depth = search_depth
 

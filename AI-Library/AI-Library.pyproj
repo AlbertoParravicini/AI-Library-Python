@@ -49,6 +49,9 @@
     <Compile Include="Adversarial Search Engines\MinimaxAlphaBeta.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Adversarial Search Engines\NegamaxAlphaBeta.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Adversarial Search\AdversarialGameState.py" />
     <Compile Include="Adversarial Search\AdversarialNode.py" />
     <Compile Include="Adversarial Search\AdversarialProblem.py" />

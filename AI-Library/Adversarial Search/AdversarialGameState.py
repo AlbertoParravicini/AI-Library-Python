@@ -13,3 +13,13 @@ class AdversarialGameState(metaclass=ABCMeta):
     def __init__(self):
         return
 
+    @abstractmethod
+    def __eq__(self, other_state):
+        """
+        Checks if two states are equal;
+        
+        Returns
+            A boolean value representing if self is equal to other_state;
+        """
+        return
+

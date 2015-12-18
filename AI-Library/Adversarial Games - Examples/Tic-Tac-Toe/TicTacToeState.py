@@ -75,3 +75,6 @@ class TicTacToeState(AdversarialGameState):
                 string += "|"
             string += "\n -------------\n" 
         return string
+
+    def __eq__(self, other_state):
+        return np.array_equal(self.board, other_state.board)

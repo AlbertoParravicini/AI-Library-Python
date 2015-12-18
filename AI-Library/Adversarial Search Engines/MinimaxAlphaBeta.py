@@ -9,14 +9,23 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
     under the assumption that both players will play rationally (i.e optimally).
     Alpha-beta pruning optimizes the search by discarding branches which are guaranteed to return 
     values worse than the current result.
-    On average, the performance gain over the standard minimax is about 50%;
     Minimax with alpha-beta pruning should be preferred over the standard minimax 
     in every case but the simplest problems, 
     as it doesn't pose any practical disadvantage over the standard Minimax;
+
+    Parameters:
+    -------------
+    search_depth: the new maximum depth of the search tree;
+                  by default it is equal to 1;
+    order_moves: boolean flag which tells if the successors should be ordered
+                 based on their immediate value; ordering them takes time but 
+                 can reduce the number of visited states, and improve the performances
+                 of the search; by default it is set ot False;
     """
     
-    def __init__(self, problem, search_depth = 1):
-        super().__init__(problem, search_depth)
+    def __init__(self, problem, **kwargs):
+        super().__init__(problem, **kwargs)
+        self.order_moves = kwargs.get("order_moves", False)
     
     def perform_search(self, initial_node):  
         """
@@ -48,7 +57,8 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         # The moves are ordered based on their immediate value,
         # which reduces the number of visited states;
         successors = self.problem.get_successors(initial_node)
-        sorted(successors, key = lambda n: self.problem.value(n))
+        if self.order_moves:
+            sorted(successors, key = lambda n: self.problem.value(n))
        
         for curr_succ in successors:
             
@@ -68,7 +78,7 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
 
 
     def __minimax_ab(self, node, depth, alpha, beta):
-        if self.problem.is_end_node(node) or depth >= self.search_depth:
+        if depth >= self.search_depth or self.problem.is_end_node(node):
             return self.problem.value(node)
         
         
@@ -117,7 +127,24 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # which is guaranteed to be between alpha and beta;   
             return value
 
-
+    def set_order_moves(self, choice):
+        """
+        Set if the successors of a node should be ordered based on their immediate value;
+    
+        Parameters:
+        -------------
+        choice: boolean variable, it tells if the moves should be ordered or not;
+        """
+        try:
+            if not isinstance(choice, bool):
+                raise TypeError
+            assert not self.search_performed
+            self.order_moves = choice
+        except TypeError:
+                print("ERROR: ", choice, " isn't a boolean variable!")
+        except AssertionError:
+                print("ERROR: serach already performed!")
+            
 
 
 
