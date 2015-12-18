@@ -12,10 +12,20 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
     Minimax with alpha-beta pruning should be preferred over the standard minimax 
     in every case but the simplest problems, 
     as it doesn't pose any practical disadvantage over the standard Minimax;
+
+    Parameters:
+    -------------
+    search_depth: the new maximum depth of the search tree;
+                  by default it is equal to 1;
+    order_moves: boolean flag which tells if the successors should be ordered
+                 based on their immediate value; ordering them takes time but 
+                 can reduce the number of visited states, and improve the performances
+                 of the search; by default it is set ot False;
     """
     
     def __init__(self, problem, search_depth = 1):
         super().__init__(problem, search_depth)
+        self.order_moves = kwargs.get("order_moves", False)
     
     def perform_search(self, initial_node):  
         """
@@ -47,7 +57,8 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         # The moves are ordered based on their immediate value,
         # which reduces the number of visited states;
         successors = self.problem.get_successors(initial_node)
-        sorted(successors, key = lambda n: self.problem.value(n))
+        if self.order_moves:
+            sorted(successors, key = lambda n: self.problem.value(n))
        
         for curr_succ in successors:
             

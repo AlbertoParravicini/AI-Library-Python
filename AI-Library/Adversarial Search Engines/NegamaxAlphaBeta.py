@@ -13,10 +13,20 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
     Negamax with alpha-beta pruning should be preferred over the standard minimax 
     in every case but the simplest problems, 
     as it doesn't pose any practical disadvantage over the standard Minimax;
+
+    Parameters:
+    -------------
+    search_depth: the new maximum depth of the search tree;
+                  by default it is equal to 1;
+    order_moves: boolean flag which tells if the successors should be ordered
+                 based on their immediate value; ordering them takes time but 
+                 can reduce the number of visited states, and improve the performances
+                 of the search; by default it is set ot False;
     """
     
-    def __init__(self, problem, search_depth = 1):
-        super().__init__(problem, search_depth)
+    def __init__(self, problem, **kwargs):
+        super().__init__(problem, **kwargs)
+        self.order_moves = kwargs.get("order_moves", False)
     
     def perform_search(self, initial_node):  
         """
@@ -42,47 +52,42 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
             self.obtained_value = self.problem.value(self.obtained_successor)
             return
         
-        self.obtained_value = self.__negamax_ab(initial_node, 0) if initial_node.is_max() else -self.__negamax_ab(initial_node, 0)  
+        
+        self.obtained_value = self.__negamax_ab(initial_node, 0, alpha, beta) if initial_node.is_max() else -self.__negamax_ab(initial_node, 0, alpha, beta)  
 
         self.search_performed = True
 
 
-    def __negamax_ab(self, node, depth):
+    def __negamax_ab(self, node, depth, alpha, beta):
         if depth >= self.search_depth or self.problem.is_end_node(node):
             # Checking the parent instead of the current node allows to have a non-strict Min-Max alternation.
             # The value is not evaluated globally, but from the point of view of the current player;
             return self.problem.value(node) if node.parent_node.is_min() else -self.problem.value(node)
         
         best_value = self.problem.min_value
-        for curr_succ in self.problem.get_successors(node):
+        # Generates the immediate successors of the node.
+        # The moves are ordered based on their immediate value,
+        # which reduces the number of visited states;
+        successors = self.problem.get_successors(node)
+        if self.order_moves:
+            sorted(successors, key = lambda n: self.problem.value(n))
+        for curr_succ in successors:
             self.num_of_visited_states += 1
-            value = -self.__negamax_ab(curr_succ, depth + 1)
-            if value > best_value:
-                best_value = value
-                
+            value = -self.__negamax_ab(curr_succ, depth + 1, -beta, -alpha)
+            if best_value < value:
+                best_value = value   
+                # If a new best move was found, save it;             
                 if depth == 0:
                     self.obtained_successor = curr_succ
-       
+            
+            # The window is restricted from left to right,
+            # by increasing the value of alpha, the higher lowest bound.
+            alpha = max(value, alpha)
+            # If the window has negative width, the branch is cut,
+            # and the value of the node returned to its parent;
+            if alpha >= beta:
+                break
         return best_value
 
 
-        ## Generates the immediate successors of the initial node,
-        ## then apply a minimax search to each of them:
-        ## their values, along with alpha and beta, are passed up to the highest level;
-        ## The moves are ordered based on their immediate value,
-        ## which reduces the number of visited states;
-        #successors = self.problem.get_successors(initial_node)
-        #sorted(successors, key = lambda n: self.problem.value(n))
-       
-        #for curr_succ in successors:
-            
-        #    self.num_of_visited_states += 1
-        #    if curr_succ.is_max():
-        #        result = self.__minimax_ab(curr_succ, 1, alpha, self.obtained_value)
-        #    else:
-        #        result = self.__minimax_ab(curr_succ, 1, self.obtained_value, beta)
-
-        #    # If a new best move was found, save it along with the value provided by the search;
-        #    if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
-        #        self.obtained_value = result
-        #        self.obtained_successor = curr_succ
+   
