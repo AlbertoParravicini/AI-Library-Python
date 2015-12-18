@@ -9,7 +9,6 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
     under the assumption that both players will play rationally (i.e optimally).
     Alpha-beta pruning optimizes the search by discarding branches which are guaranteed to return 
     values worse than the current result.
-    On average, the performance gain over the standard minimax is about 50%;
     Minimax with alpha-beta pruning should be preferred over the standard minimax 
     in every case but the simplest problems, 
     as it doesn't pose any practical disadvantage over the standard Minimax;
@@ -68,7 +67,7 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
 
 
     def __minimax_ab(self, node, depth, alpha, beta):
-        if self.problem.is_end_node(node) or depth >= self.search_depth:
+        if depth >= self.search_depth or self.problem.is_end_node(node):
             return self.problem.value(node)
         
         

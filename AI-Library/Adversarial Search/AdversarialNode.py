@@ -28,7 +28,7 @@ class AdversarialNode(metaclass=ABCMeta):
    
     def set_state(self, state):
         """
-        Set the state associated to this node;
+        Sets the state associated to this node;
         
         Parameters:
         -------------
@@ -39,7 +39,7 @@ class AdversarialNode(metaclass=ABCMeta):
   
     def set_parent(self, parent_node):
         """
-        Set the parent node associated to this node;
+        Sets the parent node associated to this node;
         
         Parameters:
         -------------
@@ -50,7 +50,7 @@ class AdversarialNode(metaclass=ABCMeta):
 
     def set_rule_applied(self, rule_applied):
         """
-        Set the rule associated to this node;
+        Sets the rule associated to this node;
         
         Parameters:
         -------------
@@ -73,3 +73,12 @@ class AdversarialNode(metaclass=ABCMeta):
             A boolean value representing if this state is a "Min" node;
         """
         return
+
+    def __eq__(self, other_node):
+        """
+        Checks if two nodes are equal by comparing their respective states;
+        
+        Returns
+            A boolean value representing if self.state is equal to other_node.state;
+        """
+        return self.state == other_node.state
