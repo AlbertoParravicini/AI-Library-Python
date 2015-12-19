@@ -4,8 +4,10 @@ from TicTacToeProblem import TicTacToeProblem
 from Minimax import Minimax
 from MinimaxAlphaBeta import MinimaxAlphaBeta
 from NegamaxAlphaBeta import NegamaxAlphaBeta
+from Negascout import Negascout
 import os
 import time
+import numpy
 
 
 
@@ -46,7 +48,7 @@ class TicTacToeGame(object):
         initial_state = TicTacToeState()
         initial_node = TicTacToeNode(initial_state)
         problem = TicTacToeProblem()
-        engine = MinimaxAlphaBeta(problem, search_depth = 6, order_moves = True)
+        engine = Negascout(problem, search_depth = 4, order_moves = True)
        
 
         
@@ -65,8 +67,7 @@ class TicTacToeGame(object):
             time.sleep(0)
             clear = lambda: os.system('cls')
             #clear()
- 
-            
+                
 
         print("\n------------------------------------------------------------")
         print("------------------------ GAME OVER! ------------------------")

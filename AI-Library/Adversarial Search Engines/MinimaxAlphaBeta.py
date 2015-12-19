@@ -58,8 +58,8 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         # which reduces the number of visited states;
         successors = self.problem.get_successors(initial_node)
         if self.order_moves:
-            sorted(successors, key = lambda n: self.problem.value(n))
-       
+            successors.sort(key=lambda n: self.problem.value(n), reverse = initial_node.is_max())
+
         for curr_succ in successors:
             
             self.num_of_visited_states += 1

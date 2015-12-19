@@ -1,16 +1,15 @@
 from AdversarialSearchEngine import AdversarialSearchEngine
 import random as random
 
-class NegamaxAlphaBeta(AdversarialSearchEngine):
+class Negascout(AdversarialSearchEngine):
     """
-    Implementation of the Negamax algorithm with alpha-beta pruning.
-    The Negamax works exactly like the standard minimax, it only has fewer lines of code.
-     The algorithm works for zero-sum, two-players, turn-based games, with perfect knowledge and deterministic moves.
+    Implementation of the Negascout algorithm.
+    The algorithm works for zero-sum, two-players, turn-based games, with perfect knowledge and deterministic moves.
     Given an initial node, it will look for the best move that the current player can perform,
     under the assumption that both players will play rationally (i.e optimally).
     Alpha-beta pruning optimizes the search by discarding branches which are guaranteed to return 
     values worse than the current result.
-    Negamax with alpha-beta pruning should be preferred over the standard minimax 
+    Negascout should be preferred over the standard Minimax 
     in every case but the simplest problems, 
     as it doesn't pose any practical disadvantage over the standard Minimax;
 
@@ -53,41 +52,46 @@ class NegamaxAlphaBeta(AdversarialSearchEngine):
             return
         
         
-        self.obtained_value = self.__negamax_ab(initial_node, 0, alpha, beta) if initial_node.is_max() else -self.__negamax_ab(initial_node, 0, alpha, beta)  
+        self.obtained_value = self.__negascout(initial_node, 0, alpha, beta) if initial_node.is_max() else -self.__negascout(initial_node, 0, alpha, beta)  
 
         self.search_performed = True
 
 
-    def __negamax_ab(self, node, depth, alpha, beta):
+    def __negascout(self, node, depth, alpha, beta):
         if depth >= self.search_depth or self.problem.is_end_node(node):
             # Checking the parent instead of the current node allows to have a non-strict Min-Max alternation.
             # The value is not evaluated globally, but from the point of view of the current player;
             return self.problem.value(node) if node.parent_node.is_min() else -self.problem.value(node)
         
-        best_value = self.problem.min_value
         # Generates the immediate successors of the node.
         # The moves are ordered based on their immediate value,
         # which reduces the number of visited states;
         successors = self.problem.get_successors(node)
         if self.order_moves:
             successors.sort(key=lambda n: self.problem.value(n), reverse = node.is_max())
-        for curr_succ in successors:
+        for curr_index, curr_succ in enumerate(successors):
             self.num_of_visited_states += 1
-            value = -self.__negamax_ab(curr_succ, depth + 1, -beta, -alpha)
-            if best_value < value:
-                best_value = value   
+            # If curr_succ isn't the first child:
+            if curr_index != 0:
+                value = -self.__negascout(curr_succ, depth + 1, -alpha - 1, -alpha)
+                if alpha < value < beta:
+                    value = -self.__negascout(curr_succ, depth + 1, -beta, -value)                  
+            else:
+                value = -self.__negascout(curr_succ, depth + 1, -beta, -alpha)
+            
+            # The window is restricted from left to right,
+            # by increasing the value of alpha, the higher lowest bound.       
+            if value > alpha:
+                alpha = value   
                 # If a new best move was found, save it;             
                 if depth == 0:
                     self.obtained_successor = curr_succ
             
-            # The window is restricted from left to right,
-            # by increasing the value of alpha, the higher lowest bound.
-            alpha = max(value, alpha)
-            # If the window has negative width, the branch is cut,
+           # If the window has negative width, the branch is cut,
             # and the value of the node returned to its parent;
             if alpha >= beta:
                 break
-        return best_value
+        return alpha
 
 
     def set_order_moves(self, choice):
