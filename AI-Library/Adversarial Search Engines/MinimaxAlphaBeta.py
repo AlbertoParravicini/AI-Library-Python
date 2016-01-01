@@ -40,8 +40,6 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
         initial_node: the node from which the search starts;
         """
         
-        alpha = self.problem.min_value
-        beta = self.problem.max_value
         self.obtained_successor = None
         self.obtained_value = alpha if initial_node.is_max() else beta
 
@@ -66,9 +64,9 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
             # A certain player might play more than one turn in a row, 
             # so no assumptions are made with respect to the turn alternation;
             if curr_succ.is_max():
-                result = self.__minimax_ab(curr_succ, 1, alpha, self.obtained_value)
+                result = self.__minimax_ab(curr_succ, 1, self.problem.min_value, self.obtained_value)
             else:
-                result = self.__minimax_ab(curr_succ, 1, self.obtained_value, beta)
+                result = self.__minimax_ab(curr_succ, 1, self.obtained_value, self.problem.max_value)
 
             # If a new best move was found, save it along with the value provided by the search;
             if (initial_node.is_max() and result > self.obtained_value) or (initial_node.is_min() and result < self.obtained_value):
