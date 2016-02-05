@@ -108,8 +108,7 @@ class MinimaxAlphaBeta(AdversarialSearchEngine):
                 self.num_of_visited_states += 1
                 # Update the current value of the node; Min will always take the node with lowest value;
                 # alpha remains fixed, as it won't be allowed to get a value lower than it; 
-                if curr_succ.is_max():
-                    value = min(value, self.__minimax_ab(curr_succ, depth + 1, alpha, beta))
+                value = min(value, self.__minimax_ab(curr_succ, depth + 1, alpha, beta))
             
                 # If the value found is outside the window, the branch is cut,
                 # and the value of the node returned to its parent;
